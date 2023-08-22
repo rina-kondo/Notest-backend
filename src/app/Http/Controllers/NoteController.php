@@ -31,4 +31,25 @@ class NoteController extends Controller
 
         return NoteResource::collection($notes);
     }
+
+    /**
+     * メモ作成
+     * @param NotePostRequest $request
+     * @return NoteResource
+     */
+    public function create(NotePostRequest $request): JsonResponse{
+        try {
+            $note = new Note();
+            $note->user_id = Auth::id();
+            $note->body = $request->body;
+            $note->save();
+        } catch (Exception $e) {
+            throw $e;
+        }
+
+        return response()->json([
+            'message' => 'メモを作成しました',
+            'note' => new NoteResource($note)
+        ], 201);
+    }
 }
