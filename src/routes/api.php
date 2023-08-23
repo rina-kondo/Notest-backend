@@ -15,9 +15,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
 // ログインユーザー取得
 Route::get('/user', function() {
@@ -28,3 +28,7 @@ Route::get('/user', function() {
 // メモの操作
 Route::get('/notes', [NoteController::class, 'fetch']);
 Route::post('/notes', [NoteController::class, 'create']);
+Route::put('/notes/{id}', [NoteController::class, 'update']);
+Route::put('/notes/save/{id}', [NoteController::class, 'toggleSaveSetting']);
+Route::delete('/notes/{id}', [NoteController::class, 'delete']);
+Route::get('/notes/search/{keyword}', [NoteController::class, 'search']);
