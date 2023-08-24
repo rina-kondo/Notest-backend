@@ -37,3 +37,5 @@ Route::get('/notes/search/{note_group_id}', [NoteController::class, 'search']);
 // メモグループの操作
 Route::get('/note-groups', [NoteGroupController::class, 'fetch']);
 Route::get('/note-groups/{note_group_id}', [NoteGroupController::class, 'show']);
+Route::post('/note-groups', [NoteGroupController::class, 'create']);
+Route::delete('/note-groups', [NoteGroupController::class, 'delete']);
