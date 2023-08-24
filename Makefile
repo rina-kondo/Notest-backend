@@ -4,6 +4,7 @@ init:
 	docker-compose exec app composer install
 	docker-compose exec app cp .env.example .env
 	docker-compose exec app php artisan key:generate
+	php artisan storage:link
 	php artisan migrate:fresh --seed --seeder=UserSeeder
 	php artisan db:seed  --class=NoteGroupsSeeder
 	php artisan db:seed  --class=NotesTableSeeder
