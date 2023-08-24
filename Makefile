@@ -4,7 +4,9 @@ init:
 	docker-compose exec app composer install
 	docker-compose exec app cp .env.example .env
 	docker-compose exec app php artisan key:generate
-	docker-compose exec app php artisan migrate:fresh --seed
+	php artisan migrate:fresh --seed --seeder=UserSeeder
+	php artisan db:seed  --class=NoteGroupsSeeder
+	php artisan db:seed  --class=NotesTableSeeder
 
 up:
 	docker-compose up -d
@@ -30,6 +32,6 @@ seed:
     docker-compose exec app php artisan db:seed
 
 # DB
-# db:
-#     docker-compose exec db bash
-# 		mysql -u $MYSQL_USER -p$MYSQL_PASSWORD $MYSQL_DATABASE
+db:
+    docker-compose exec db bash
+		mysql -u $MYSQL_USER -p$MYSQL_PASSWORD $MYSQL_DATABASE

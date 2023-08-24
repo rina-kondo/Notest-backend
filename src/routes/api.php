@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\NoteController;
+use App\Http\Controllers\NoteGroupController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -31,4 +32,8 @@ Route::post('/notes', [NoteController::class, 'create']);
 Route::put('/notes/{id}', [NoteController::class, 'update']);
 Route::put('/notes/save/{id}', [NoteController::class, 'toggleSaveSetting']);
 Route::delete('/notes/{id}', [NoteController::class, 'delete']);
-Route::get('/notes/search/{keyword}', [NoteController::class, 'search']);
+Route::get('/notes/search/{note_group_id}', [NoteController::class, 'search']);
+
+// メモグループの操作
+Route::get('/note-groups', [NoteGroupController::class, 'fetch']);
+Route::get('/note-groups/{note_group_id}', [NoteGroupController::class, 'show']);

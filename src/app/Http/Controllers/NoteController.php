@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Http\Requests\NotePostRequest;
 use App\Http\Resources\SaveSettingPutRequest;
 use App\Http\Resources\NoteResource;
@@ -42,6 +43,7 @@ class NoteController extends Controller
         try {
             $note = new Note();
             $note->user_id = Auth::id();
+            $note->note_group_id = $request->note_group_id;
             $note->is_saved = $request->is_saved;
             $note->body = $request->body;
             $note->save();
@@ -116,21 +118,20 @@ class NoteController extends Controller
     }
 
     /**
-     * メモの検索
-     * @param string $keyword
+     * メモ検索
+     * @param Request $request
      * @return AnonymousResourceCollection
      */
-    public function search($keyword): AnonymousResourceCollection{
+    public function search(Request $request)
+    {
+        $query = $request->input('query');
         $id = Auth::id();
+
         try {
-            if (empty($keyword)) {
-                $notes = Note::where('user_id', $id)->get();
-            } else {
-                $notes = Note::where('user_id', $id)->where('body', 'like', "%{$keyword}%")->get();
-            }
+            $notes = Note::where('user_id', $id)->where('body', 'LIKE', "%{$query}%")->get();
         } catch (Exception $e) {
             throw $e;
-        }/*  */
+        }
 
         return NoteResource::collection($notes);
     }

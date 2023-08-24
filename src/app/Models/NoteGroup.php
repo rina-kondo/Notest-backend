@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Note extends Model
+class NoteGroup extends Model
 {
     use HasFactory;
 
-    public function noteGroup()
+    public function notes()
     {
-        return $this->belongsTo(NoteGroup::class);
+        return $this->hasMany(Note::class);
     }
 }
