@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\NoteController;
 use App\Http\Controllers\NoteGroupController;
+use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,9 +17,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
+
+// ユーザー登録・ログイン・ログアウト
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::post('/logout', [AuthController::class, 'logout']);
+});
 
 // ログインユーザー取得
 Route::get('/user', function() {
@@ -39,3 +47,4 @@ Route::get('/note-groups', [NoteGroupController::class, 'fetch']);
 Route::get('/note-groups/{note_group_id}', [NoteGroupController::class, 'show']);
 Route::post('/note-groups', [NoteGroupController::class, 'create']);
 Route::delete('/note-groups', [NoteGroupController::class, 'delete']);
+Route::get('/note-groups/search/{keyword}', [NoteGroupController::class, 'search']);

@@ -92,4 +92,27 @@ class NoteGroupController extends Controller
             'message' => 'メモグループを削除しました',
         ], 200);
     }
+
+    /**
+     * メモグループ検索
+     * @param $keyword
+     * @return AnonymousResourceCollection
+     */
+    public function search($keyword): AnonymousResourceCollection
+    {
+        $id = Auth::id();
+        if (!$id) {
+            throw new Exception('ログインしていません');
+        }
+
+        try {
+            $noteGroups = NoteGroup::with(['notes' => function($query) use ($keyword) {
+                $query->where('body', 'like', "%{$keyword}%");
+            }])->where('user_id', $id)->get();
+        } catch (Exception $e) {
+            throw $e;
+        }
+
+        return NoteGroupResource::collection($noteGroups);
+    }
 }
